@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ProductApp.Application.Interface.Services;
 using ProductApp.Application.Mappings;
+using ProductApp.Application.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +14,8 @@ namespace ProductApp.Application
     {
         public static IServiceCollection AddApplicationDependencies(this IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(ProductProfile));
-
+            services.AddAutoMapper(cfg => cfg.AddProfile<ProductProfile>());
+            services.AddScoped<IProductService, ProductService>();
             return services;
         }
     }

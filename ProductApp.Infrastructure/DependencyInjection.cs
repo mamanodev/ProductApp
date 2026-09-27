@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ProductApp.Application.Interface;
+using ProductApp.Application.Interface.Repositories;
 using ProductApp.Infrastructure.Data;
+using ProductApp.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +23,9 @@ namespace ProductApp.Infrastructure
                 options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
             });
 
+            // Register Repositories
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }

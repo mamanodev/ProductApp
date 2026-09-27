@@ -33,20 +33,18 @@ namespace ProductApp.Application.Services
         {
             var newProduct = mapper.Map<Product>(dto);
             await productRepository.AddAsync(newProduct);
-            var result = await unitOfWork.SaveChangesAsync();
-            if (result <= 0)
-            {
-                throw new Exception("Failed to add product");
-            }
+            await unitOfWork.SaveChangesAsync();
+
             return mapper.Map<ProductDto>(newProduct);
         }
-        public async Task<bool> UpdateAsync(int id, ProductUpdateDto product)
+        public async Task<bool> UpdateAsync(int id, ProductUpdateDto dto)
         {
             var existingProduct = await productRepository.GetByIdAsync(id);
             if (existingProduct == null)
             {
                 return false;
             }
+            mapper.Map(dto, existingProduct);
             existingProduct.UpdatedAt = DateTime.UtcNow;
             await productRepository.UpdateAsync(existingProduct);
             var result = await unitOfWork.SaveChangesAsync();
